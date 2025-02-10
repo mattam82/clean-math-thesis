@@ -4,10 +4,28 @@
 #import "@preview/equate:0.3.0": equate
 #import "@preview/i-figured:0.2.4": reset-counters, show-equation
 
+#let split_name(str) = {
+  let arr = str.split(" ")
+  (arr.at(0), arr.slice(1).join(" "))
+}
+
+#let display_jury_member(acc, mem) = {
+  let (name, role, status, affiliation) = mem
+  let (first, last) = split_name(name)
+  (acc + (grid.cell(first), grid.cell(smallcaps(last)), grid.cell(role), grid.cell(status), grid.cell(affiliation)))
+}
+
+#let display_jury(jury) = {
+  align(center,
+  grid(columns: (10%, 13%, 14%, 25%, 54%), rows: auto, gutter: 6pt, align: left,
+    ..jury.fold(none, display_jury_member)))
+}
+
 #let template(
   // personal/subject related stuff
   author: "Stuart Dent",
   title: "My Very Fancy and Good-Looking Thesis About Interesting Stuff",
+  title-fr: none,
   supervisor1: "Prof. Dr. Sue Persmart",
   supervisor2: "Prof. Dr. Ian Telligent",
   degree: "Example",
@@ -17,14 +35,17 @@
   deadline: datetime.today().display(),
   city: "Example City",
   defense: none,
-
+  jury: (("John Doe", "University of Paris"), ),
+  cover-header: none,
   // file paths for logos etc.
   uni-logo: none,
   institute-logo: none,
 
   // formatting settings
-  body-font: "Libertinus Serif",
-  cover-font: "Libertinus Serif",
+  body-font: "New Computer Modern",
+  //body-font: "CMU Serif",
+  cover-font: "New Computer Modern",
+  title-font: "Instrument Rocq",
 
   // content that needs to be placed differently then normal chapters
   abstract: none,
@@ -112,7 +133,7 @@ show heading.where(
   if it.numbering != none {
     block(width: 100%)[
       #line(length: 100%, stroke: 0.6pt + heading-color)
-      #v(0.1cm)
+      #v(1cm)
       #set align(left)
       #set text(22pt)
       #text(heading-color)[Chapter
@@ -128,7 +149,7 @@ show heading.where(
   else {
     block(width: 100%)[
       #line(length: 100%, stroke: 0.6pt + heading-color)
-      #v(0.1cm)
+      #v(1cm)
       #set align(left)
       #set text(22pt)
       #it.body
@@ -194,14 +215,17 @@ show figure.where(
 // ------------------- Cover -------------------
 set text(font: cover-font)  // cover font
 
-v(1fr)
+if cover-header != none {
+align(center, text(cover-header))
+}
+v(0.5fr)
 //logos
   if uni-logo != none and institute-logo != none {
     grid(
       columns: (1fr, 1fr),
       rows: (auto),
-      column-gutter: 100pt,
-      row-gutter: 7pt,
+      column-gutter: 70pt,
+      row-gutter: 3pt,
       grid.cell(
         colspan: 1,
         align: center,
@@ -212,16 +236,16 @@ v(1fr)
         align: center,
         institute-logo,
       ),
-      grid.cell(
-        colspan: 1,
-        align: center,
-        text(1.5em, weight: 700, university)
-      ),
-      grid.cell(
-        colspan: 1,
-        align: center,
-        text(1.5em, weight: 700, institute)
-      )
+      // grid.cell(
+      //   colspan: 1,
+      //   align: center,
+      //   text(1.5em, weight: 700, university)
+      // ),
+      // grid.cell(
+      //   colspan: 1,
+      //   align: center,
+      //   text(1.5em, weight: 700, institute)
+      // )
     )
   } else if uni-logo != none {
     grid(
@@ -258,30 +282,29 @@ v(1fr)
       )
     )
   }
-v(5fr)
+v(0.5fr)
 align(center, text(1.5em, weight: 500, smallcaps(degree)))
-v(5fr)
+v(0.5fr)
 //title
 line(length: 100%, stroke: cover-color)
-align(center, text(3em, weight: 700, title))
-line(start: (10%, 0pt), length: 80%, stroke: cover-color)
-v(5fr)
-//author
-align(center, text(1em, weight: 500, style: "italic", "Présentée et soutenue publiquement par"))
-v(0.5fr) 
-align(center, text(1.5em, weight: 500, smallcaps(author)))
-v(1fr)
-align(center, text("Le " + defense.display("[day] [month repr:short] [year]")))
-//university
-align(center, text(1.3em, weight: 100, university + ", " + institute))
-//date
-let deadline-text = deadline
-if city != none {
-  deadline-text = city + ", " + deadline
+align(center, text(2em, weight: 700, text(font: title-font, title)))
+if title-fr != none {
+  align(center, text(1em, weight: 500, style: "italic", text(font: title-font, title-fr)))
 }
-align(center, text(1.3em, weight: 100, deadline-text))
+line(start: (0%, 0pt), length: 100%, stroke: cover-color)
+align(center, text(1.3em, weight: 100, "Version du " + deadline))
+v(0.5fr)
+align(center, text(1em, weight: 500, style: "italic", "Présentée et soutenue publiquement par"))
+let (first, last) = split_name(author)
+align(center, text(1.5em, weight: 500, first + " ") + text(1.5em, weight: 500, smallcaps(last)))
+align(center, text("le " + defense))
+v(0.7fr)
+// No french.display("[day] [month repr:short] [year]")))
+//university
+//align(center, text(1.3em, weight: 100, university + ", " + institute))
 // supervisors
-align(center + bottom, text(1.3em, weight: 100, " supervised by" + linebreak() + supervisor1 + linebreak() +  supervisor2))
+align(center + bottom, text(1.3em, weight: 100, style: "italic", "devant le jury composé de" + linebreak()) +
+display_jury(jury))
 pagebreak()
 
 // ------------------- Abstract -------------------
