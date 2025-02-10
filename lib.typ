@@ -16,7 +16,7 @@
   institute: "Example Institute",
   deadline: datetime.today().display(),
   city: "Example City",
-
+  defense: none,
 
   // file paths for logos etc.
   uni-logo: none,
@@ -259,17 +259,19 @@ v(1fr)
     )
   }
 v(5fr)
+align(center, text(1.5em, weight: 500, smallcaps(degree)))
+v(5fr)
 //title
 line(length: 100%, stroke: cover-color)
 align(center, text(3em, weight: 700, title))
 line(start: (10%, 0pt), length: 80%, stroke: cover-color)
 v(5fr)
 //author
-align(center, text(1.5em, weight: 500, degree + " Thesis by " + author))
-//study program
-if program != none {
-  align(center, text(1.3em, weight: 100, "Study Programme: " + program))
-}
+align(center, text(1em, weight: 500, style: "italic", "Présentée et soutenue publiquement par"))
+v(0.5fr) 
+align(center, text(1.5em, weight: 500, smallcaps(author)))
+v(1fr)
+align(center, text("Le " + defense.display("[day] [month repr:short] [year]")))
 //university
 align(center, text(1.3em, weight: 100, university + ", " + institute))
 //date
