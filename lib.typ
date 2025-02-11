@@ -64,7 +64,7 @@
 ) = {
 // ------------------- settings -------------------
 set document(author: author, title: title)
-set heading(numbering: "1.1")  // Heading numbering
+set heading(numbering: "1.1.1")  // Heading numbering
 set enum(numbering: "(i)") // Enumerated lists
 show link: set text(fill: link-color)
 show ref: set text(fill: link-color)
@@ -133,9 +133,9 @@ show heading.where(
   if it.numbering != none {
     block(width: 100%)[
       #line(length: 100%, stroke: 0.6pt + heading-color)
-      #v(1cm)
+      #v(0.4cm)
       #set align(left)
-      #set text(22pt)
+      #set text(22pt, font: title-font)
       #text(heading-color)[Chapter
       #counter(heading).display(
         "1:" + it.numbering
@@ -159,28 +159,55 @@ show heading.where(
   }
 }
 // Automatically insert a page break before each chapter
-show heading.where(
-  level: 1
-): it => {
-  colbreak(weak: true)
-  it
-}
+show heading.where(level: 1): it => colbreak(weak: true) + it
+
 // only valid for abstract and declaration
 show heading.where(
-  outlined: false,
-  level: 2
+  level: 2,
+  outlined: false
 ): it => {
   set align(center)
   set text(18pt)
   it.body
   v(0.5cm, weak: true)
 }
+
+show heading.where(
+  level: 2,
+  outlined: true
+): it => {
+  set align(left)
+  set text(14pt)
+  v(0.5cm)
+  h(-1em)
+
+  if it.numbering != none { counter(heading).display("1." + it.numbering) }
+  
+  " " + it.body
+  v(0.5cm, weak: true)
+}
+
+show heading.where(
+  level: 3
+): it => {
+  // set align(left)
+  set text(11pt)
+  v(0.5cm, weak: true)
+  if it.numbering != none { 
+    h(-1em)
+
+    counter(heading).display("1." + it.numbering) }
+  else { h(-1.4em) }
+
+  " " + it.body
+  v(0.5cm, weak: true)
+}
+
 // Settings for sub-sub-sub-sections e.g. section 1.1.1.1
 show heading.where(
   level: 4
 ): it => {
-  it.body
-  linebreak()
+  it.body + "."
 }
 // same for level 5 headings
 show heading.where(
@@ -318,23 +345,29 @@ set page(
   numbering: "1",
   number-align: center,
   header: context {
-    align(center, emph(hydra(1)))
+    if calc.odd(here().page()) {
+      align(right, emph(hydra(1)))
+    } else {
+      align(left, emph(hydra(2)))
+    }
+    //line(length: 100%)
     v(0.2cm)
-  },
+  }
 )  // Page numbering after cover & abstract => they have no page number
 pagebreak()
 
 // ------------------- Tables of ... -------------------
 
 // Table of contents
-outline(depth: 3, indent: 1em, fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted")))
+outline(depth: 3, indent: 1em)
+// fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted")))
 pagebreak()
 
 // List of figures
 outline(
   title: [List of Figures],
   target: figure.where(kind: image),
-  fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
+//  fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
 )
 pagebreak()
 
@@ -343,7 +376,7 @@ pagebreak()
 outline(
   title: [List of Tables],
   target: figure.where(kind: table),
-  fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
+  //fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
 )
 pagebreak()
 
@@ -355,15 +388,14 @@ show raw.where(lang: "gallina"): it => {
 }
 
 show raw.where(lang: "rocq"): it => { 
-  set text(font: "SourceCodePro", ligatures: true, discretionary-ligatures: true, features: (COQX: 1, dlig: 1, XV00: 1))
-  it
+  let size = if it.block { 0.8em } else { 1em } 
+  set text(font: ("Fira Code", "New Computer Modern Math", ), size: size, style: "normal", 
+  discretionary-ligatures: true, 
+  ligatures: true, 
+    features: (COQX: 1, dlig: 1, XV00: 1))
+  if it.block { align(center, block(fill: rgb("#F6E6E1"), inset: 8pt, radius: 4pt, it)) }
+  else { it }
 }
-
-let varpurple = rgb("#660066")
-let constrmaroon = rgb("#990000")
-let defgreen = rgb("#006600")
-let indblue = rgb("#0000cc")
-let kwred = rgb("#cc1a1a")
 
 show "Γ_arities": name => "Γ" + sub("ar")
 show "Γ_param": _ => "Γ" + sub("param")
@@ -373,6 +405,18 @@ show "=s" : _ => "=" + sub("s")
 // show "Prop": name => gallinakw("Prop")
 // show "Type": name => gallinakw("Type")
 // show "Set": name => gallinakw("Set")
+
+show "⇝*": it => text("⇝") + super("*")
+let erase_symbol = text(1.5em, weight: 700, font: "New Computer Modern Math", "ε")
+show "ERASE": it => erase_symbol
+show "ERASES": it => text("⇝") + sub(erase_symbol)
+show "EVAL": it => sym.arrow.b.double
+show ";;;": it => text(";")
+show "|-": it => $⊢$
+show "abs_env_ext_rel": it => $~_("ext")$
+
+let erase(t) = "(" + erase_symbol + t + ")"
+let mkApps(f, args) = $#raw(lang: "rocq", "mkApps")f args$
 
 
 // ------------------- Content -------------------
