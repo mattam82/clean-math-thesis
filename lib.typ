@@ -162,7 +162,7 @@ show heading.where(
 show heading.where(
   level: 1
 ): it => {
-  pagebreak(weak: true)
+  colbreak(weak: true)
   it
 }
 // only valid for abstract and declaration
@@ -347,6 +347,32 @@ outline(
 )
 pagebreak()
 
+set raw(syntaxes: ("../lib/Rocq.sublime-syntax", "../lib/Gallina.sublime-syntax"),    theme: "../lib/Rocq.tmTheme")
+
+show raw.where(lang: "gallina"): it => { 
+  set text(font: "SourceCodePro")
+  it
+}
+
+show raw.where(lang: "rocq"): it => { 
+  set text(font: "SourceCodePro")
+  it
+}
+
+let varpurple = rgb("#660066")
+let constrmaroon = rgb("#990000")
+let defgreen = rgb("#006600")
+let indblue = rgb("#0000cc")
+let kwred = rgb("#cc1a1a")
+
+show "Γ_arities": name => "Γ" + sub("ar")
+show "Γ_param": _ => "Γ" + sub("param")
+show "Γ_args": _ => "Γ" + sub("args")
+show "=s" : _ => "=" + sub("s")
+// let gallinakw(it) = text(fill: kwred, it)
+// show "Prop": name => gallinakw("Prop")
+// show "Type": name => gallinakw("Type")
+// show "Set": name => gallinakw("Set")
 
 
 // ------------------- Content -------------------
