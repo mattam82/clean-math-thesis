@@ -350,12 +350,12 @@ pagebreak()
 set raw(syntaxes: ("../lib/Rocq.sublime-syntax", "../lib/Gallina.sublime-syntax"),    theme: "../lib/Rocq.tmTheme")
 
 show raw.where(lang: "gallina"): it => { 
-  set text(font: "SourceCodePro")
+  set text(font: "SourceCodePro", ligatures: true)
   it
 }
 
 show raw.where(lang: "rocq"): it => { 
-  set text(font: "SourceCodePro")
+  set text(font: "SourceCodePro", ligatures: true, discretionary-ligatures: true, features: (COQX: 1, dlig: 1, XV00: 1))
   it
 }
 
