@@ -46,6 +46,7 @@
   //body-font: "CMU Serif",
   cover-font: "New Computer Modern",
   title-font: "Instrument Rocq",
+  header-font: "Instrument Rocq",
 
   // content that needs to be placed differently then normal chapters
   abstract: none,
@@ -340,15 +341,36 @@ if abstract != none{
   abstract
 }
 
+/// Display a heading's numbering and body.
+///
+/// - ctx (context): The context in which the element was found.
+/// - candidate (content): The heading to display, panics if this is not a heading.
+/// -> content
+let display_header(ctx, candidate) = {
+  if calc.even(ctx.anchor-loc.page()) {
+  if candidate.has("numbering") and candidate.numbering != none {
+    place(bottom + left, dx : -2em, dy: -0.55em,
+      text(weight: "bold", numbering(candidate.numbering, ..counter(heading).at(candidate.location()))))
+  }
+
+  emph(candidate.body) }
+  else {
+    emph(candidate.body)
+    if candidate.has("numbering") and candidate.numbering != none {
+      place(bottom + right, dx: 2em, dy: -0.55em,
+        text(weight: "bold", numbering(candidate.numbering, ..counter(heading).at(candidate.location()))))
+    }
+  }
+}
 
 set page(
   numbering: "1",
   number-align: center,
   header: context {
     if calc.odd(here().page()) {
-      align(right, emph(hydra(1)))
+      align(right, text(font: header-font, hydra(book: true, display: display_header, 1)))
     } else {
-      align(left, emph(hydra(2)))
+      align(left, text(font: header-font, hydra(book: true, display: display_header, 2)))
     }
     //line(length: 100%)
     v(0.2cm)
