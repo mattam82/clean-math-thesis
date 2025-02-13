@@ -415,9 +415,17 @@ show raw.where(lang: "rocq"): it => {
   discretionary-ligatures: true, 
   ligatures: true, 
     features: (COQX: 1, dlig: 1, XV00: 1))
-  if it.block { align(center, block(fill: rgb("#F6E6E1"), inset: 8pt, radius: 4pt, it)) }
+  if it.block { align(center, block(breakable: false, fill: rgb("#F6E6E1"), inset: 8pt, radius: 4pt, it)) }
   else { it }
 }
+
+show "Rocq": it => smallcaps(it)
+show "CertiCoq": it => smallcaps(it)
+show "Gallina": it => smallcaps(it)
+show "Coq": it => smallcaps(it)
+show "PCUIC": it => smallcaps(it)
+show "MetaRocq": it => smallcaps(it)
+show "OCaml": it => smallcaps(it)
 
 show "Γ_arities": name => "Γ" + sub("ar")
 show "Γ_param": _ => "Γ" + sub("param")
