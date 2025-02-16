@@ -4,6 +4,8 @@
 #import "@preview/equate:0.3.0": equate
 #import "@preview/i-figured:0.2.4": reset-counters, show-equation
 
+#let in-outline = state("in-outline", false)
+
 #let split_name(str) = {
   let arr = str.split(" ")
   (arr.at(0), arr.slice(1).join(" "))
@@ -54,7 +56,7 @@
   // colors
   cover-color: rgb("#800080"),
   heading-color: rgb("#0000ff"),
-  link-color: rgb("#000000"),
+  link-color: blue,
 
   // equation settings
   equate-settings: none,
@@ -68,6 +70,7 @@ set document(author: author, title: title)
 set heading(numbering: "1.1.1")  // Heading numbering
 set enum(numbering: "(i)") // Enumerated lists
 show link: set text(fill: link-color)
+
 show ref: set text(fill: link-color)
 
 // ------------------- Math equation settings -------------------
@@ -150,7 +153,7 @@ show heading.where(
   else {
     block(width: 100%)[
       #line(length: 100%, stroke: 0.6pt + heading-color)
-      #v(1cm)
+      #v(0.2cm)
       #set align(left)
       #set text(22pt)
       #it.body
@@ -160,7 +163,7 @@ show heading.where(
   }
 }
 // Automatically insert a page break before each chapter
-show heading.where(level: 1): it => colbreak(weak: true) + it
+show heading.where(level: 1): it => if it.numbering != none { colbreak(weak: true) + it } else { it }
 
 // only valid for abstract and declaration
 show heading.where(
@@ -188,27 +191,26 @@ show heading.where(
   v(0.5cm, weak: true)
 }
 
-show heading.where(
-  level: 3
-): it => {
-  // set align(left)
-  set text(11pt)
-  v(0.5cm, weak: true)
-  if it.numbering != none { 
-    h(-1em)
+// show heading.where(
+//   level: 3
+// ): it => {
+//   // set align(left)
+//   set text(11pt)
+//   v(0.5cm, weak: true)
+//   if it.numbering != none { 
+//     h(-1em)
 
-    counter(heading).display("1." + it.numbering) }
-  else { h(-1.4em) }
-
-  " " + it.body
-  v(0.5cm, weak: true)
-}
+//     counter(heading).display("1." + it.numbering) + " " + it.body
+//   }
+//   else { it.body }
+//   v(0.5cm, weak: true)
+// }
 
 // Settings for sub-sub-sub-sections e.g. section 1.1.1.1
 show heading.where(
   level: 4
 ): it => {
-  it.body + "."
+  text(style: "italic", it.body + ".")
 }
 // same for level 5 headings
 show heading.where(
@@ -227,6 +229,13 @@ show heading: it => {
   }
 }
 // ------------------- other settings -------------------
+
+show outline: it => {
+  in-outline.update(true)
+  it
+  in-outline.update(false)
+} 
+
 // Settings for Chapter in the outline
 show outline.entry.where(
   level: 1
@@ -375,7 +384,8 @@ set page(
     //line(length: 100%)
     v(0.2cm)
   }
-)  // Page numbering after cover & abstract => they have no page number
+) 
+
 pagebreak()
 
 // ------------------- Tables of ... -------------------
@@ -389,10 +399,14 @@ pagebreak()
 outline(
   title: [List of Figures],
   target: figure.where(kind: image),
+//  fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted")))
+)
+
+outline(
+  title: [List of Specifications],
+  target: figure.where(kind: "Specification"),
 //  fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
 )
-pagebreak()
-
 
 // List of Tables
 outline(
@@ -448,7 +462,6 @@ show "PARARED": it => sym.arrow.r.triple
 
 let erase(t) = "(" + erase_symbol + t + ")"
 let mkApps(f, args) = $#raw(lang: "rocq", "mkApps")f args$
-
 
 // ------------------- Content -------------------
 body
