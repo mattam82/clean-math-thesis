@@ -414,6 +414,12 @@ outline(
   target: figure.where(kind: table),
   //fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
 )
+
+outline(
+  title: [List of Listings],
+  target: figure.where(kind: raw),
+  //fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
+)
 pagebreak()
 
 set raw(syntaxes: ("../lib/Rocq.sublime-syntax", "../lib/Gallina.sublime-syntax"),    theme: "../lib/Rocq.tmTheme")
@@ -445,13 +451,16 @@ show "Γ_arities": name => "Γ" + sub("ar")
 show "Γ_param": _ => "Γ" + sub("param")
 show "Γ_args": _ => "Γ" + sub("args")
 show "=s" : _ => "=" + sub("s")
+show "cumsRle": _ => $scripts(prec.eq)_s^(text("Rle"))$
+
 // let gallinakw(it) = text(fill: kwred, it)
 // show "Prop": name => gallinakw("Prop")
 // show "Type": name => gallinakw("Type")
 // show "Set": name => gallinakw("Set")
 
 show "⇝*": it => text("⇝") + super("*")
-let erase_symbol = text(1.5em, weight: 700, font: "New Computer Modern Math", "ε")
+// let erase_symbol = text(1.5em, weight: 700, font: "New Computer Modern Math", "ε")
+let erase_symbol = $cal(E)$
 show "ERASE": it => erase_symbol
 show "ERASES": it => text("⇝") + sub(erase_symbol)
 show "EVAL": it => sym.arrow.b.double
@@ -459,6 +468,8 @@ show ";;;": it => text(";")
 show "|-": it => $⊢$
 show "abs_env_ext_rel": it => $~_("ext")$
 show "PARARED": it => sym.arrow.r.triple
+show "vass": it => ":"
+show "forall": it  => "∀"
 
 let erase(t) = "(" + erase_symbol + t + ")"
 let mkApps(f, args) = $#raw(lang: "rocq", "mkApps")f args$
