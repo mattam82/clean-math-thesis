@@ -453,6 +453,13 @@ show "Γ_args": _ => "Γ" + sub("args")
 show "=s" : _ => "=" + sub("s")
 show "cumsRle": _ => $scripts(prec.eq)_s^(text("Rle"))$
 
+show "<=[Rle]": _ => $scripts(prec.eq)_s^(text("Rle"))$
+show "<=[Re]": _ => $scripts(prec.eq)_s^(text("Re"))$
+show "<==[Re,Rle,0]": _ => $scripts(prec.eq)_s^(text("Re, Rle, 0"))$
+show "<==[Re,Rle,S napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp+1"))$
+show "<==[Re,Rle,napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp"))$
+show "<==[Re,Re,0]": _ => $scripts(prec.eq)_s^(text("Re, Re,  0"))$
+
 // let gallinakw(it) = text(fill: kwred, it)
 // show "Prop": name => gallinakw("Prop")
 // show "Type": name => gallinakw("Type")
