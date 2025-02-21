@@ -446,6 +446,7 @@ show "Coq": it => smallcaps(it)
 show "PCUIC": it => smallcaps(it)
 show "MetaRocq": it => smallcaps(it)
 show "OCaml": it => smallcaps(it)
+show "Elpi": it => smallcaps(it)
 
 show "Γ_arities": name => "Γ" + sub("ar")
 show "Γ_param": _ => "Γ" + sub("param")
