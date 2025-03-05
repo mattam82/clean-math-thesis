@@ -129,7 +129,7 @@ show math.equation: box  // no line breaks in inline math
 show: great-theorems-init  // show rules for theorems
 
 
-// ------------------- Settings for Chapter headings -------------------
+// ------------------- Settings for Parts and Chapter headings -------------------
 show heading.where(level: 1): set heading(supplement: [Chapter])
 show heading.where(
   level: 1,
@@ -443,7 +443,7 @@ show "Rocq": it => smallcaps(it)
 show "CertiCoq": it => smallcaps(it)
 show "Gallina": it => smallcaps(it)
 show "Coq": it => smallcaps(it)
-show "PCUIC": it => smallcaps(it)
+show "PCUIC": it => smallcaps("PCuic")
 show "MetaRocq": it => smallcaps(it)
 show "OCaml": it => smallcaps(it)
 show "Elpi": it => smallcaps(it)
@@ -454,12 +454,13 @@ show "Γ_args": _ => "Γ" + sub("args")
 show "=s" : _ => "=" + sub("s")
 show "cumsRle": _ => $scripts(prec.eq)_s^(text("Rle"))$
 
-show "<=[Rle]": _ => $scripts(prec.eq)_s^(text("Rle"))$
+show "≤[Rle]": _ => $scripts(prec.eq)_a^(text("Rle"))$
+show "≤s[Rle]": _ => $scripts(prec.eq)_s^(text("Rle"))$
 show "<=[Re]": _ => $scripts(prec.eq)_s^(text("Re"))$
-show "<==[Re,Rle,0]": _ => $scripts(prec.eq)_s^(text("Re, Rle, 0"))$
-show "<==[Re,Rle,S napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp+1"))$
-show "<==[Re,Rle,napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp"))$
-show "<==[Re,Re,0]": _ => $scripts(prec.eq)_s^(text("Re, Re,  0"))$
+show "≤[Re,Rle,0]": _ => $scripts(prec.eq)_s^(text("Re, Rle, 0"))$
+show "≤[Re,Rle,S napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp+1"))$
+show "≤[Re,Rle,napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp"))$
+show "≤[Re,Re,0]": _ => $scripts(prec.eq)_s^(text("Re, Re,  0"))$
 
 // let gallinakw(it) = text(fill: kwred, it)
 // show "Prop": name => gallinakw("Prop")
