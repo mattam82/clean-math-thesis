@@ -23,6 +23,15 @@
     ..jury.fold(none, display_jury_member)))
 }
 
+#let part(num, name, display: none) = {
+  pagebreak()
+  set page(header: none)
+  let disp = if display != none { display } else { name }
+  let partname = "Part " + numbering("I", num) + linebreak() + v(1em) + display
+  align(center + horizon, text(font: "Instrument Rocq", weight: 700, size: 3.5em, [#figure(supplement: [Part], numbering: "I", kind: "part", caption: name, partname) #label("part" + str(num))]))
+  pagebreak()
+} 
+
 #let template(
   // personal/subject related stuff
   author: "Stuart Dent",
@@ -390,8 +399,24 @@ pagebreak()
 
 // ------------------- Tables of ... -------------------
 
+// Do not display the caption in the figure
+show figure.caption.where(kind: "part"): it => { }
+
+show outline.entry : it => {
+  set text(font: "Instrument Rocq")
+  if it.element.has("kind") { 
+    if it.element.kind == "part" { 
+      set text(weight: "black", size: 16pt)
+      v(2em)
+      it.indented(it.prefix() + h(0.5em) + [--], it.body() + box(width: 1fr, [ ])) // + it.page())
+      v(0.5em)
+    } else { it } }
+  else { it }
+}
+
 // Table of contents
-outline(depth: 3, indent: 1em)
+outline(depth: 3, indent: 1em,
+  target: selector(heading).or(<part1>, <part2>))
 // fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted")))
 pagebreak()
 
@@ -443,7 +468,7 @@ show "Rocq": it => smallcaps(it)
 show "CertiCoq": it => smallcaps(it)
 show "Gallina": it => smallcaps(it)
 show "Coq": it => smallcaps(it)
-show "PCUIC": it => smallcaps("PCuic")
+show "PCUIC": it => smallcaps("PCUIC")
 show "MetaRocq": it => smallcaps(it)
 show "OCaml": it => smallcaps(it)
 show "Elpi": it => smallcaps(it)
@@ -461,6 +486,8 @@ show "≤[Re,Rle,0]": _ => $scripts(prec.eq)_s^(text("Re, Rle, 0"))$
 show "≤[Re,Rle,S napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp+1"))$
 show "≤[Re,Rle,napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp"))$
 show "≤[Re,Re,0]": _ => $scripts(prec.eq)_s^(text("Re, Re,  0"))$
+
+show "lift0": it => sym.arrow.t.double
 
 // let gallinakw(it) = text(fill: kwred, it)
 // show "Prop": name => gallinakw("Prop")
