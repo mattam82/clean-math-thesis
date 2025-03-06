@@ -168,7 +168,7 @@ show heading.where(
   else {
     block(width: 100%)[
       //#line(length: 100%, stroke: 0.6pt + heading-color)
-      #v(0.2cm)
+      #v(0.4cm)
       #set align(left)
       #set text(22pt, font: title-font)
       #set par(first-line-indent: 0em, justify: false)
@@ -179,7 +179,7 @@ show heading.where(
   }
 }
 // Automatically insert a page break before each chapter
-show heading.where(level: 1): it => if it.numbering != none { colbreak(weak: true) + it } else { it }
+show heading.where(level: 1): it => colbreak(weak: true) + it
 
 // only valid for abstract and declaration
 show heading.where(
