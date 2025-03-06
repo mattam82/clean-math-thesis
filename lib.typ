@@ -3,6 +3,14 @@
 #import "@preview/hydra:0.5.2": hydra
 #import "@preview/equate:0.3.0": equate
 #import "@preview/i-figured:0.2.4": reset-counters, show-equation
+#import "@preview/abbr:0.2.2"
+#import "@preview/drafting:0.2.2"
+
+#let rocqkw(it) = text(fill: rgb("#FF540A"), it)
+#let rocqind(it) = text(fill: rgb("#0000cc"), it)
+#let rocqcstr(it) = text(fill: rgb("#260085"), it)
+#let rocqdef(it) =  text(fill: rgb("#006600"), it)
+#let rocqtype(s) = rocqkw([Type]) + sub(s)
 
 #let in-outline = state("in-outline", false)
 
@@ -27,7 +35,7 @@
   pagebreak()
   set page(header: none)
   let disp = if display != none { display } else { name }
-  let partname = "Part " + numbering("I", num) + linebreak() + v(1em) + display
+  let partname = "Part " + numbering("I", num) + linebreak() + v(1em) + disp
   align(center + horizon, text(font: "Instrument Rocq", weight: 700, size: 3.5em, [#figure(supplement: [Part], numbering: "I", kind: "part", caption: name, partname) #label("part" + str(num))]))
   pagebreak()
 } 
@@ -145,29 +153,28 @@ show heading.where(
 ): it => {
   if it.numbering != none {
     block(width: 100%)[
-      #line(length: 100%, stroke: 0.6pt + heading-color)
+      //#line(length: 100%, stroke: 0.6pt + heading-color)
       #v(0.4cm)
       #set align(left)
       #set text(22pt, font: title-font)
-      #text(heading-color)[Chapter
-      #counter(heading).display(
-        "1:" + it.numbering
-      )]
+      #set par(first-line-indent: 0em, justify: false)
+      #text(heading-color)[Chapter #counter(heading).display("1:" + it.numbering)]
 
-      #it.body
+#align(left, it.body)
       #v(-0.5cm)
-      #line(length: 100%, stroke: 0.6pt + heading-color)
+      #line(length: 100%, stroke: 0.6pt)
     ]
   }
   else {
     block(width: 100%)[
-      #line(length: 100%, stroke: 0.6pt + heading-color)
+      //#line(length: 100%, stroke: 0.6pt + heading-color)
       #v(0.2cm)
       #set align(left)
-      #set text(22pt)
+      #set text(22pt, font: title-font)
+      #set par(first-line-indent: 0em, justify: false)
       #it.body
       #v(-0.5cm)
-      #line(length: 100%, stroke: 0.6pt + heading-color)
+      #line(length: 100%, stroke: 0.6pt)
     ]
   }
 }
@@ -179,8 +186,9 @@ show heading.where(
   level: 2,
   outlined: false
 ): it => {
-  set align(center)
-  set text(18pt)
+  set align(left)
+  set text(14pt)
+  set par(first-line-indent: 0em)
   it.body
   v(0.5cm, weak: true)
 }
@@ -191,12 +199,12 @@ show heading.where(
 ): it => {
   set align(left)
   set text(14pt)
+  set par(first-line-indent: 0em)
   v(0.5cm)
-  h(-1em)
 
-  if it.numbering != none { counter(heading).display("1." + it.numbering) }
+  if it.numbering != none { counter(heading).display("1." + it.numbering) + " " }
   
-  " " + it.body
+  it.body
   v(0.5cm, weak: true)
 }
 
@@ -407,8 +415,8 @@ show outline.entry : it => {
   if it.element.has("kind") { 
     if it.element.kind == "part" { 
       set text(weight: "black", size: 16pt)
-      v(2em)
-      it.indented(it.prefix() + h(0.5em) + [--], it.body() + box(width: 1fr, [ ])) // + it.page())
+      v(1.5em)
+      link(it.element.location(), it.indented(it.prefix() + h(0.5em) + [--], it.body() + box(width: 1fr, [ ]))) // + it.page())
       v(0.5em)
     } else { it } }
   else { it }
@@ -446,6 +454,8 @@ outline(
   //fill: line(length: 100%, stroke: (thickness: 1pt, dash: "loosely-dotted"))
 )
 pagebreak()
+abbr.list()
+pagebreak()
 
 set raw(syntaxes: ("../lib/Rocq.sublime-syntax", "../lib/Gallina.sublime-syntax"),    theme: "../lib/Rocq.tmTheme")
 
@@ -477,15 +487,23 @@ show "Γ_arities": name => "Γ" + sub("ar")
 show "Γ_param": _ => "Γ" + sub("param")
 show "Γ_args": _ => "Γ" + sub("args")
 show "=s" : _ => "=" + sub("s")
-show "cumsRle": _ => $scripts(prec.eq)_s^(text("Rle"))$
 
-show "≤[Rle]": _ => $scripts(prec.eq)_a^(text("Rle"))$
-show "≤s[Rle]": _ => $scripts(prec.eq)_s^(text("Rle"))$
-show "<=[Re]": _ => $scripts(prec.eq)_s^(text("Re"))$
-show "≤[Re,Rle,0]": _ => $scripts(prec.eq)_s^(text("Re, Rle, 0"))$
-show "≤[Re,Rle,S napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp+1"))$
-show "≤[Re,Rle,napp]": _ => $scripts(prec.eq)_s^(text("Re, Rle, napp"))$
-show "≤[Re,Re,0]": _ => $scripts(prec.eq)_s^(text("Re, Re,  0"))$
+let leqarg(it) = {
+  let args = it.split(",")
+  args.map(arg => text(fill: color.black, arg)).join(text(fill: rgb("#FF540A"), ","))
+}
+
+show "cumsRle": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
+
+show "≤[Rle]": _ => $scripts(prec.eq)_a^(leqarg("Rle"))$
+show "≤s[Rle]": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
+show "<=[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
+show "≤[Re,Rle,0]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, 0"))$
+show "≤[Re,Rle,S napp]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, napp+1"))$
+show "≤[Re,Rle,napp]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, napp"))$
+show "≤[Re,Re,0]": _ => $scripts(prec.eq)_s^(leqarg("Re, Re,  0"))$
+show "≤[Rle,0]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, 0"))$
+show "≤[Re,Rle,#|args|]": _ => $scripts(prec.eq)_s^(text(fill: #color.black, "Re, Rle, #|args|"))$
 
 show "lift0": it => sym.arrow.t.double
 
