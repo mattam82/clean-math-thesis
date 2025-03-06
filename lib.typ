@@ -474,14 +474,21 @@ show raw.where(lang: "rocq"): it => {
   else { it }
 }
 
+show "Coq ": it => smallcaps(it)
+show "Coq,": it => smallcaps(it)
+show "Coq.": it => smallcaps(it)
+show "Coq;": it => smallcaps(it)
 show "Rocq": it => smallcaps(it)
 show "CertiCoq": it => smallcaps(it)
 show "Gallina": it => smallcaps(it)
-show "Coq": it => smallcaps(it)
+show "Coquand": it => { 
+  show "Coq": it => it
+  text(weight: "light", it) }
 show "PCUIC": it => smallcaps("PCUIC")
 show "MetaRocq": it => smallcaps(it)
 show "OCaml": it => smallcaps(it)
 show "Elpi": it => smallcaps(it)
+show "Malfunction": it => smallcaps(it)
 
 show "Γ_arities": name => "Γ" + sub("ar")
 show "Γ_param": _ => "Γ" + sub("param")
