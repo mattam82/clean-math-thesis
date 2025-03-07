@@ -503,14 +503,20 @@ let leqarg(it) = {
 show "cumsRle": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
 
 show "≤[Rle]": _ => $scripts(prec.eq)_a^(leqarg("Rle"))$
+show "≤s[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
 show "≤s[Rle]": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
-show "<=[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
-show "≤[Re,Rle,0]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, 0"))$
-show "≤[Re,Rle,S napp]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, napp+1"))$
-show "≤[Re,Rle,napp]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, napp"))$
-show "≤[Re,Re,0]": _ => $scripts(prec.eq)_s^(leqarg("Re, Re,  0"))$
-show "≤[Rle,0]": _ => $scripts(prec.eq)_s^(leqarg("Re, Rle, 0"))$
-show "≤[Re,Rle,#|args|]": _ => $scripts(prec.eq)_s^(text(fill: #color.black, "Re, Rle, #|args|"))$
+show "=s": _ => $scripts(tilde.eq)_s$
+show "<=s": _ => $scripts(prec.eq)_s$
+show "<=s[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
+show "<=s[Rle]": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
+show "<=[Re]": _ => $scripts(prec.eq)_a^(leqarg("Re"))$
+show "≤[Re,Rle,0]": _ => $scripts(prec.eq)_a^(leqarg("Re, Rle, 0"))$
+show "≤[Re,Rle,S napp]": _ => $scripts(prec.eq)_a^(leqarg("Re, Rle, napp+1"))$
+show "≤[Re,Rle,napp]": _ => $scripts(prec.eq)_a^(leqarg("Re, Rle, napp"))$
+show "≤[Re,Re,0]": _ => $scripts(prec.eq)_a^(leqarg("Re, Re, 0"))$
+show "≤[Rle,0]": _ => $scripts(prec.eq)_a^(leqarg("Rle, 0"))$
+show "≤[Rle,napp]": _ => $scripts(prec.eq)_a^(leqarg("Rle, napp"))$
+show "≤[Re,Rle,#|args|]": _ => $scripts(prec.eq)_a^(text(fill: #color.black, "Re, Rle, #|args|"))$
 
 show "lift0": it => sym.arrow.t.double
 
@@ -519,7 +525,7 @@ show "lift0": it => sym.arrow.t.double
 // show "Type": name => gallinakw("Type")
 // show "Set": name => gallinakw("Set")
 
-show "⇝*": it => text("⇝") + super("*")
+show "⇝*": it => $scripts(⇝)^(*)$
 // let erase_symbol = text(1.5em, weight: 700, font: "New Computer Modern Math", "ε")
 let erase_symbol = $cal(E)$
 show "ERASE": it => erase_symbol
