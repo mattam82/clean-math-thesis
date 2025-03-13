@@ -505,6 +505,8 @@ show "cumsRle": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
 show "≤[Rle]": _ => $scripts(prec.eq)_a^(leqarg("Rle"))$
 show "≤s[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
 show "≤s[Rle]": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
+show "≤s[Rle,napp]": _ => $scripts(prec.eq)_s^(leqarg("Rle, napp"))$
+show "≤s[Rle,0]": _ => $scripts(prec.eq)_s^(leqarg("Rle, 0"))$
 show "=s": _ => $scripts(tilde.eq)_s$
 show "<=s": _ => $scripts(prec.eq)_s$
 show "<=s[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
