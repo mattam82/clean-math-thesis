@@ -502,23 +502,21 @@ let leqarg(it) = {
 
 show "cumsRle": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
 
-show "≤[Rle]": _ => $scripts(prec.eq)_a^(leqarg("Rle"))$
-show "≤s[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
-show "≤s[Rle]": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
-show "≤s[Rle,napp]": _ => $scripts(prec.eq)_s^(leqarg("Rle, napp"))$
-show "≤s[Rle,0]": _ => $scripts(prec.eq)_s^(leqarg("Rle, 0"))$
+show "≤s[Conv]": _ => $scripts(tilde.eq)_s$
+show "≤s[pb]": _ => $scripts(prec.eq)_s^(leqarg("pb"))$
+show "≤s[pb,napp]": _ => $scripts(prec.eq)_s^(leqarg("pb, napp"))$
+show "≤s[pb,0]": _ => $scripts(prec.eq)_s^(leqarg("pb, 0"))$
 show "=s": _ => $scripts(tilde.eq)_s$
 show "<=s": _ => $scripts(prec.eq)_s$
-show "<=s[Re]": _ => $scripts(prec.eq)_s^(leqarg("Re"))$
-show "<=s[Rle]": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
-show "<=[Re]": _ => $scripts(prec.eq)_a^(leqarg("Re"))$
-show "≤[Re,Rle,0]": _ => $scripts(prec.eq)_a^(leqarg("Re, Rle, 0"))$
-show "≤[Re,Rle,S napp]": _ => $scripts(prec.eq)_a^(leqarg("Re, Rle, napp+1"))$
-show "≤[Re,Rle,napp]": _ => $scripts(prec.eq)_a^(leqarg("Re, Rle, napp"))$
-show "≤[Re,Re,0]": _ => $scripts(prec.eq)_a^(leqarg("Re, Re, 0"))$
-show "≤[Rle,0]": _ => $scripts(prec.eq)_a^(leqarg("Rle, 0"))$
-show "≤[Rle,napp]": _ => $scripts(prec.eq)_a^(leqarg("Rle, napp"))$
-show "≤[Re,Rle,#|args|]": _ => $scripts(prec.eq)_a^(text(fill: #color.black, "Re, Rle, #|args|"))$
+show "<=s[Conv]": _ => $scripts(prec.eq)_s^(leqarg("Conv"))$
+show "<=s[pb]": _ => $scripts(prec.eq)_s^(leqarg("pb"))$
+show "<=[Conv]": _ => $scripts(prec.eq)_a^(leqarg("Conv"))$
+show "≤[Conv,0]": _ => $scripts(prec.eq)_a^(leqarg("Conv, 0"))$
+show "≤[pb]": _ => $scripts(prec.eq)_a^(leqarg("pb"))$
+show "≤[pb,0]": _ => $scripts(prec.eq)_a^(leqarg("pb, 0"))$
+show "≤[pb,S napp]": _ => $scripts(prec.eq)_a^(leqarg("pb, napp+1"))$
+show "≤[pb,napp]": _ => $scripts(prec.eq)_a^(leqarg("pb, napp"))$
+show "≤[pb,#|args|]": _ => $scripts(prec.eq)_a^(text(fill: #color.black, "pb, #|args|"))$
 
 show "lift0": it => sym.arrow.t.double
 
