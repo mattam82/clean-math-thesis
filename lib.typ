@@ -502,7 +502,13 @@ let leqarg(it) = {
 
 show "cumsRle": _ => $scripts(prec.eq)_s^(leqarg("Rle"))$
 
-show "≤s[Conv]": _ => $scripts(tilde.eq)_s$
+show regex("≤s\[(.*?)\]"): it => {
+  let res = it.text.match(regex("≤s\[(.*?)\]"))
+  if res == none { text(fill: red, weight: "extrabold", "parse error") }
+  else { 
+    let super = res.at("captures").at(0)
+    $scripts(prec.eq)_s^(rocqcstr(super))$ }
+}
 show "≤s[pb]": _ => $scripts(prec.eq)_s^(leqarg("pb"))$
 show "≤s[pb,napp]": _ => $scripts(prec.eq)_s^(leqarg("pb, napp"))$
 show "≤s[pb,0]": _ => $scripts(prec.eq)_s^(leqarg("pb, 0"))$
@@ -517,6 +523,9 @@ show "≤[pb,0]": _ => $scripts(prec.eq)_a^(leqarg("pb, 0"))$
 show "≤[pb,S napp]": _ => $scripts(prec.eq)_a^(leqarg("pb, napp+1"))$
 show "≤[pb,napp]": _ => $scripts(prec.eq)_a^(leqarg("pb, napp"))$
 show "≤[pb,#|args|]": _ => $scripts(prec.eq)_a^(text(fill: #color.black, "pb, #|args|"))$
+
+show "|+arg>": _ => $scripts(⊢)_+^("arg")$
+show "|+>": _ => $scripts(⊢)_+$
 
 show "lift0": it => sym.arrow.t.double
 
