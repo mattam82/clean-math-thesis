@@ -527,7 +527,13 @@ show "≤[pb,#|args|]": _ => $scripts(prec.eq)_a^(text(fill: #color.black, "pb, 
 show "|+arg>": _ => $scripts(⊢)_+^("arg")$
 show "|+>": _ => $scripts(⊢)_+$
 
-show "lift0": it => sym.arrow.t.double
+show regex("lift0\[(.*?)\]"): it => {
+  let res = it.text.match(regex("lift0\[(.*?)\]"))
+  if res == none { text(fill: red, weight: "extrabold", "parse error") }
+  else { 
+    let super = res.at("captures").at(0)
+    $scripts(sym.arrow.t.double)^(text(fill: #color.black, super))$ }
+}
 
 // let gallinakw(it) = text(fill: kwred, it)
 // show "Prop": name => gallinakw("Prop")
