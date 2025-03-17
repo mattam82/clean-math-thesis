@@ -553,6 +553,7 @@ show "abs_env_ext_rel": it => $~_("ext")$
 show "PARARED": it => sym.arrow.r.triple
 show "vass": it => ":"
 show "forall ": it  => "∀ "
+show "cdots": it => $dots.h.c$
 
 let erase(t) = "(" + erase_symbol + t + ")"
 let mkApps(f, args) = $#raw(lang: "rocq", "mkApps")f args$
