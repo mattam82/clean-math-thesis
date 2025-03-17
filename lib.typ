@@ -493,6 +493,7 @@ show "Malfunction": it => smallcaps(it)
 show "Γ_arities": name => "Γ" + sub("ar")
 show "Γ_param": _ => "Γ" + sub("param")
 show "Γ_args": _ => "Γ" + sub("args")
+show "Γ_ind": _ => "Γ" + sub("ind")
 show "=s" : _ => "=" + sub("s")
 
 let leqarg(it) = {
@@ -551,7 +552,7 @@ show "|-": it => $⊢$
 show "abs_env_ext_rel": it => $~_("ext")$
 show "PARARED": it => sym.arrow.r.triple
 show "vass": it => ":"
-show "forall": it  => "∀"
+show "forall ": it  => "∀ "
 
 let erase(t) = "(" + erase_symbol + t + ")"
 let mkApps(f, args) = $#raw(lang: "rocq", "mkApps")f args$
